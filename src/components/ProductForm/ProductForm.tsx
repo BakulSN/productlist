@@ -1,43 +1,46 @@
-import { useState } from 'react';
-import { ProductModel } from '../../models/state/product.model';
+import { memo, useCallback, useState } from 'react';
 import Input from '../Input/Input';
 import { AddFormButton, StyledForm } from './Form.styles';
 import defaultImage from '../../assets/react.svg';
-
-type ProductFormProps = {
-  submitForm: (product: Partial<ProductModel>) => void;
-};
+import { ProductFormProps } from '../../models/state/product-state.model';
 
 const ProductForm = ({ submitForm }: ProductFormProps) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState(0);
 
-  const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setTitle(e.target.value);
+  const handleTitle = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value),
+    []
+  );
 
-  const handleDescription = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setDescription(e.target.value);
+  const handleDescription = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => setDescription(e.target.value),
+    []
+  );
 
-  const handlePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePrice = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setPrice(+e.target.value);
-  };
+  }, []);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (title.trim() !== '' && description.trim() !== '') {
-      const newProduct = {
-        title,
-        description,
-        price,
-        image: defaultImage,
-      };
-      submitForm(newProduct);
-      setTitle('');
-      setDescription('');
-      setPrice(0);
-    }
-  };
+  const handleSubmit = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      if (title.trim() !== '' && description.trim() !== '') {
+        const newProduct = {
+          title,
+          description,
+          price,
+          image: defaultImage,
+        };
+        submitForm(newProduct);
+        setTitle('');
+        setDescription('');
+        setPrice(0);
+      }
+    },
+    [title, description, price, submitForm]
+  );
 
   return (
     <StyledForm onSubmit={handleSubmit}>
@@ -70,4 +73,4 @@ const ProductForm = ({ submitForm }: ProductFormProps) => {
   );
 };
 
-export default ProductForm;
+export default memo(ProductForm);

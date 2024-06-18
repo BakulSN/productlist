@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import { memo, useCallback, useState } from 'react';
 import { ProductModel } from '../../../models/state/product.model';
 import {
   ContainerCard,
@@ -34,17 +34,17 @@ const ProductCard = ({
     description,
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUpdatedProduct((prevProduct) => ({ ...prevProduct, [name]: value }));
-  };
+  }, []);
 
-  const handleEdit = () => {
+  const handleEdit = useCallback(() => {
     setUpdatedProduct({ id, title, image, price, description });
     setIsEditing(true);
-  };
+  }, [id, title, image, price, description]);
 
-  const handleSave = () => {
+  const handleSave = useCallback(() => {
     const savedProduct = {
       id,
       title: updatedProduct.title || title,
@@ -55,14 +55,17 @@ const ProductCard = ({
 
     editProduct(id, savedProduct);
     setIsEditing(false);
-  };
+  }, [id, title, image, price, description, editProduct, updatedProduct]);
 
-  const handleCancel = () => {
+  const handleCancel = useCallback(() => {
     setIsEditing(false);
     setUpdatedProduct({ id, title, image, price, description });
-  };
+  }, [id, title, image, price, description]);
 
-  const handleDelete = () => deleteProduct(id);
+  const handleDelete = useCallback(
+    () => deleteProduct(id),
+    [deleteProduct, id]
+  );
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;

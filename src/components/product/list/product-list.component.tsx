@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { ProductModel } from '../../../models/state/product.model';
 import ProductCard from '../card/product-card.component';
 import { StyledProductList } from './StyledList.styles';
@@ -17,4 +18,4 @@ const ProductList = ({ products }: ProductListProps) => {
   );
 };
 
-export default ProductList;
+export default memo(ProductList);

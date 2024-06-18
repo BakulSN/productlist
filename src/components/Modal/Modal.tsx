@@ -1,14 +1,8 @@
-import { ReactNode } from 'react';
+import { memo } from 'react';
 import crossIcon from '../../assets/icons/cross.svg';
 import { ModalContent, ModalHeader, Overlay } from './Modal.styles';
 import { StyleSheetManager } from 'styled-components';
-
-interface ModalProps {
-  title: string;
-  visible: boolean;
-  onClose: () => void;
-  children?: ReactNode;
-}
+import { ModalProps } from '../../models/state/product-state.model';
 
 const Modal = ({ title, visible, onClose, children }: ModalProps) => {
   return (
@@ -27,4 +21,4 @@ const Modal = ({ title, visible, onClose, children }: ModalProps) => {
     </StyleSheetManager>
   );
 };
-export default Modal;
+export default memo(Modal);

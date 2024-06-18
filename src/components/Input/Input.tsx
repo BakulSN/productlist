@@ -1,4 +1,11 @@
-import { HTMLProps, useEffect, useRef, useState } from 'react';
+import {
+  HTMLProps,
+  memo,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { InputTText, StyledLabel } from './Input.styles';
 
 interface InputProps extends HTMLProps<HTMLInputElement> {
@@ -30,30 +37,33 @@ const Input = ({
     }
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let inputValue = e.target.value;
-    if (
-      rest.name === 'price' &&
-      inputValue.length > 1 &&
-      inputValue.startsWith('0')
-    ) {
-      inputValue = inputValue.slice(1);
-    }
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      let inputValue = e.target.value;
+      if (
+        rest.name === 'price' &&
+        inputValue.length > 1 &&
+        inputValue.startsWith('0')
+      ) {
+        inputValue = inputValue.slice(1);
+      }
 
-    if (rest.name === 'price' && isNaN(Number(inputValue))) {
-      return;
-    }
+      if (rest.name === 'price' && isNaN(Number(inputValue))) {
+        return;
+      }
 
-    if (maxLength && inputValue.length > maxLength) {
-      return;
-    }
+      if (maxLength && inputValue.length > maxLength) {
+        return;
+      }
 
-    setInnerValue(inputValue);
+      setInnerValue(inputValue);
 
-    if (onChange) {
-      onChange(e);
-    }
-  };
+      if (onChange) {
+        onChange(e);
+      }
+    },
+    [rest.name, onChange, maxLength]
+  );
 
   return (
     <>
@@ -71,4 +81,4 @@ const Input = ({
   );
 };
 
-export default Input;
+export default memo(Input);

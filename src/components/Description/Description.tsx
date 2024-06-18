@@ -1,15 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { MAX_LENGTH_DESCRIPTION } from '../../constants/api.constants';
 import {
   DescriptionContainer,
   DescriptionText,
 } from './DescriptionText.styles';
 import { StyleSheetManager } from 'styled-components';
-
-interface DescriptionProps {
-  text: string;
-  maxLength?: number;
-}
+import { DescriptionProps } from '../../models/state/product-state.model';
 
 const Description = ({
   text,
@@ -29,14 +25,17 @@ const Description = ({
     }
   }, [showDetails, text]);
 
-  const descriptionText =
-    text.length > maxLength && !showDetails
-      ? text.slice(0, maxLength).trim() + '...'
-      : text.trim();
+  const descriptionText = useMemo(() => {
+    if (text.length > maxLength && !showDetails) {
+      return text.slice(0, maxLength).trim() + '...';
+    } else {
+      return text.trim();
+    }
+  }, [text, maxLength, showDetails]);
 
-  const toggleDetails = () => {
+  const toggleDetails = useCallback(() => {
     setShowDetails(!showDetails);
-  };
+  }, []);
 
   return (
     <>
@@ -58,4 +57,4 @@ const Description = ({
   );
 };
 
-export default Description;
+export default memo(Description);

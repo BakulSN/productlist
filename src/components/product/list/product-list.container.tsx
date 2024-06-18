@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import useProducts from '../../../hooks/products.hook';
 import ProductCreationContainer from '../../ProductCreationContainer/ProductCreationContainer';
 import ProductList from './product-list.component';
@@ -15,4 +16,4 @@ const ProductListContainer = () => {
     </>
   );
 };
-export default ProductListContainer;
+export default memo(ProductListContainer);

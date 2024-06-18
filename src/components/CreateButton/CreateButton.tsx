@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Button, ButtonText } from './CreateButton.styles';
 
 interface CreateButtonProps {
@@ -11,4 +12,4 @@ const CreateButton = ({ onClick }: CreateButtonProps) => {
     </Button>
   );
 };
-export default CreateButton;
+export default memo(CreateButton);

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useCallback, useState } from 'react';
 import CreateButton from '../CreateButton/CreateButton';
 import Modal from '../Modal/Modal';
 import ProductForm from '../ProductForm/ProductForm';
@@ -9,15 +9,18 @@ const ProductCreationContainer = () => {
   const [isModalVisible, setModalVisible] = useState(false);
   const { addProduct } = useAddProduct();
 
-  const handleOpenModal = () => setModalVisible(true);
-  const handleCloseModal = () => {
-    setModalVisible(false);
-  };
+  const handleOpenModal = useCallback(() => setModalVisible(true), []);
 
-  const handleFormSubmit = (product: Partial<ProductModel>) => {
-    addProduct(product);
-    handleCloseModal();
-  };
+  const handleCloseModal = useCallback(() => setModalVisible(false), []);
+
+  const handleFormSubmit = useCallback(
+    (product: Partial<ProductModel>) => {
+      addProduct(product);
+      handleCloseModal();
+    },
+    [addProduct, handleCloseModal]
+  );
+
   return (
     <>
       <CreateButton onClick={handleOpenModal} />
@@ -33,4 +36,4 @@ const ProductCreationContainer = () => {
   );
 };
 
-export default ProductCreationContainer;
+export default memo(ProductCreationContainer);
