@@ -7,7 +7,7 @@ export interface ProductStateModel {
 
 export interface ProductFormProps {
   submitForm: (product: Partial<ProductModel>) => void;
-};
+}
 
 export interface ModalProps {
   title: string;

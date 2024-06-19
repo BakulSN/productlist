@@ -35,7 +35,7 @@ const Description = ({
 
   const toggleDetails = useCallback(() => {
     setShowDetails(!showDetails);
-  }, []);
+  }, [showDetails]);
 
   return (
     <>
