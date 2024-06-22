@@ -23,8 +23,14 @@ const useProducts = () => {
         setLoading(false);
       }
     }
-    fetchProducts();
-  }, []);
+    const localProducts = localStorage.getItem('products');
+    if (localProducts) {
+      dispatch(setProductsAction(JSON.parse(localProducts)));
+      setLoading(false);
+    } else {
+      fetchProducts();
+    }
+  }, [dispatch]);
 
   return { products, loading, error };
 };
